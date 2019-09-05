@@ -1,0 +1,25 @@
+package CSCI6010;
+public class Swap {
+	public static void main(String[] args) {
+
+		// TODO Auto-generated method stub
+
+		int i = 5, j = 6;
+
+		int temp;
+
+		temp = i;
+
+		i = j;
+
+		j = temp;
+
+		System.out.println(i);   //should print 6
+
+		System.out.println(j);   //should print 5
+
+	}
+
+
+
+}
