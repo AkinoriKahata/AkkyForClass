@@ -1,0 +1,16 @@
+package CSCI6010;
+public class FibonacciNumber {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int N = 10;
+		int p = 1;
+		int q = 0;
+		System.out.print(q + ","+p + ",");
+		for(int i=3; i<N; i++) {
+		int f = p + q;
+		System.out.print(f + ",");
+		q = p;
+		p = f;
+		}
+	}
+}
