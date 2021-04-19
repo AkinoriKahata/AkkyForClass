@@ -24,12 +24,45 @@ What are the security properties of the system? How does it adhere to the princi
 - Policy - SELinux style
 
 ### Code analysis of Each feature
-(1) dom0 and domU
+(1) The relationship dom0 and domU
+a. eventchannel
+- Since domU can not use hypercall, there is a mechanism which can enables domU to communicate with dom0.
+== example code from "" ==
+static struct evtchn *alloc_evtchn_bucket(struct domain *d, unsigned int port)
+{ .....
+    chn = xzalloc_array(struct evtchn, EVTCHNS_PER_BUCKET);
+    ...
+    for ( i = 0; i < EVTCHNS_PER_BUCKET; i++ )
+    {
+        chn[i].port = port + i;
+        rwlock_init(&chn[i].lock);
+    }
+    return chn;
+}
+==
 
 (2) Mandatory Access control provided by XSM
-a. Type
-b. Role
-c. User
+- there are three type of policies
+ a. Type
+  - Define which hypercall can be executed.
+ b. Role
+  - Each role has set of types which belong to the role.
+ c. User
+  - Each user has set of roles which belong to the user.
+
+- Policies are written in TE(type enforcement) file, *.te.
+- general format is "allow <source type> <target type>:<security class> <hypercall>;"
+- The example below means that enables the dom0_t type to execute hypercalls in the xen class targeting a xen_t type.
+- By using these files, type can be implemented each module, and each type are allocated to role, and users.  
+== example code from "dom0.te" ==
+allow dom0_t xen_t:xen {
+	settime tbufcontrol readconsole clearconsole perfcontrol mtrr_add
+	mtrr_del mtrr_read microcode physinfo quirk writeconsole readapic
+	writeapic privprofile nonprivprofile kexec firmware sleep frequency
+	getidle debug getcpuinfo heap pm_op mca_op lockprof cpupool_op
+	getscheduler setscheduler hypfs_op
+};
+==
 
 (3) TCB
 
