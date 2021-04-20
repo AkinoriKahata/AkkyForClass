@@ -53,10 +53,11 @@ static struct evtchn *alloc_evtchn_bucket(struct domain *d, unsigned int port)
  c. User
   - Each user has set of roles which belong to the user.
 
-- Policies are written in TE(type enforcement) file, *.te.
-- general format is "allow <source type> <target type>:<security class> <hypercall>;"
-- The example below means that enables the dom0_t type to execute hypercalls in the xen class targeting a xen_t type.
-- By using these files, type can be implemented each module, and each type are allocated to role, and users.  
+- Policies are written in TE(type enforcement) file, like **dom0.te**. General format is below.
+```
+*allows<ource type> <target type>:<security class> <hypercall>; 
+```
+- The example below means that enables the dom0_t type to execute hypercalls in the xen class targeting a xen_t type. By using these files, type can be implemented each module, and each type are allocated to role, and users.  
 
 #### example code from "dom0.te"
 ```
