@@ -7,18 +7,19 @@ What are the security properties of the system? How does it adhere to the princi
 
 ### Xen's security feature
 **The point of Over whole architecture**
-1. Key component dom0
- - Only dom0 can communicate with hardware. domains are separated each other.
+1. dom0 as reference monitor
+- Dom0 (domain0) is initial domain which is started at boot timing of hyperxen hyper visor, and it is key component for security. Dom0 has privilege to manages domU (domain user). Basically, only dom0 can access the hardware directly. DomU have to communicate with dom0 to use syscall(hypercall in VM). Thanks to this architecture, xen may check the critical activities of domUs by dom0.
+- But sometimes, domU want to access drivers directly. In these cases, there are mechanism of DriverDomain, and also hardware can be passed thourh to the domU.
 
 2. XSM (Xen Security Module) and FLASK (Flux Advanced Security Kernel)
- - Provides **Mandatory Access control**. Control VMM operation. Security ENriched LInux (SELinux) in dom0; use network to communicate
+- Provides **Mandatory Access control**. Control VMM operation. Security ENriched LInux (SELinux).
 
 3. TCB
- - For tamper proof, Xen has a much larger TCB, and more flexible
+- For tamper proof, Xen has a much larger TCB, and more flexible
 
 4. Verification
- - Xode - 200k + LOC
- - Policy - SELinux style
+- Xode - 200k + LOC
+- Policy - SELinux style
 
 ### Code analysis of Each feature
 (1) The relationship dom0 and domU
@@ -64,16 +65,9 @@ allow dom0_t xen_t:xen {
 ```
 These 
 
-
-
 (3) TCB
-
 
 (4) Tamper proof
 
-
-<Key source cord>
-xen/xen/xsm/flask/ss/policydb.h
-xen/xen/xsm/flask/ss/policydb.c
-xen/tools/flask/policy/modules/xen.te
- 
+### Advanced Feature (domain0 less architecture)
+- 
