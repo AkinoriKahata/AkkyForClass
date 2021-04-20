@@ -12,7 +12,7 @@ What are the security properties of the system? How does it adhere to the princi
 - But sometimes, domU want to access drivers directly. In these cases, there are mechanism of DriverDomain, and also hardware can be passed thourh to the domU.
 
 2. XSM (Xen Security Module) and FLASK (Flux Advanced Security Kernel)
-- Provides **Mandatory Access control**. Control VMM operation. Security ENriched LInux (SELinux).
+- Provides **Mandatory Access control** like Security ENriched LInux (SELinux).
 
 3. TCB
 - For tamper proof, Xen has a much larger TCB, and more flexible
@@ -71,3 +71,4 @@ These
 
 ### Advanced Feature (domain0 less architecture)
 - 
+(1) device model stub domain
