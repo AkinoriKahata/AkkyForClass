@@ -8,13 +8,10 @@ What are the security properties of the system? How does it adhere to the princi
 ### Xen's security feature
 **The point of Over whole architecture**
 1. Key component dom0
- - only dom0 can communicate with hardware.
- - domains are separated each other.
+ - Only dom0 can communicate with hardware. domains are separated each other.
 
 2. XSM (Xen Security Module) and FLASK (Flux Advanced Security Kernel)
- - Provides Mandatory Access contro.
- - control VMM operation
- - Security ENriched LInux (SELinux) in dom0; use network to communicate
+ - Provides **Mandatory Access control**. Control VMM operation. Security ENriched LInux (SELinux) in dom0; use network to communicate
 
 3. TCB
  - For tamper proof, Xen has a much larger TCB, and more flexible
@@ -26,8 +23,7 @@ What are the security properties of the system? How does it adhere to the princi
 ### Code analysis of Each feature
 (1) The relationship dom0 and domU
 a. eventchannel
-- Since domU can not use hypercall, there is a mechanism which can enables domU to communicate with dom0.
-- each domain can communicate via event_chnnel. This channel managed by event_fifo.c.
+- Since domU can not use hypercall, there is a mechanism which can enables domU to communicate with dom0. Eeach domain can communicate via event_chnnel. This channel managed by event_fifo.c.
 
 #### example code from event_channel.c
 ```
@@ -46,12 +42,9 @@ static struct evtchn *alloc_evtchn_bucket(struct domain *d, unsigned int port)
 
 (2) Mandatory Access control provided by XSM
 - there are three type of policies
- a. Type
-  - Define which hypercall can be executed.
- b. Role
-  - Each role has set of types which belong to the role.
- c. User
-  - Each user has set of roles which belong to the user.
+ a. Type  - Define which hypercall can be executed.
+ b. Role  - Each role has set of types which belong to the role.
+ c. User  - Each user has set of roles which belong to the user.
 
 - Policies are written in TE(type enforcement) file, like **dom0.te**. General format is below.
 ```
