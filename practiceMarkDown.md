@@ -42,7 +42,7 @@ static struct evtchn *alloc_evtchn_bucket(struct domain *d, unsigned int port)
 ```
 
 (2) Mandatory Access control provided by XSM
-- there are three type of policies
+- there are three type of policies.
  a. Type  - Define which hypercall can be executed.
  b. Role  - Each role has set of types which belong to the role.
  c. User  - Each user has set of roles which belong to the user.
@@ -50,11 +50,7 @@ static struct evtchn *alloc_evtchn_bucket(struct domain *d, unsigned int port)
 - Policies are written in TE(type enforcement) file, like **dom0.te**. General format is below.
 ```
 *allows<ource type> <target type>:<security class> <hypercall>; 
-```
-- The example below means that enables the dom0_t type to execute hypercalls in the xen class targeting a xen_t type. By using these files, type can be implemented each module, and each type are allocated to role, and users.  
-
-#### example code from "dom0.te"
-```
+<example code from "dom0.te">
 allow dom0_t xen_t:xen {
 	settime tbufcontrol readconsole clearconsole perfcontrol mtrr_add
 	mtrr_del mtrr_read microcode physinfo quirk writeconsole readapic
@@ -62,8 +58,12 @@ allow dom0_t xen_t:xen {
 	getidle debug getcpuinfo heap pm_op mca_op lockprof cpupool_op
 	getscheduler setscheduler hypfs_op
 };
+//dom0_t type can execute hypercalls in the xen class targeting a xen_t type.
 ```
-These 
+- By using these files, type can be implemented each module, and each type are allocated to role, and users. These set of security attributes associated are called **security context**. These contexts are labeled by security id **sid**. Example of sids are "xen" contains "system_u:system_r:xen_t,s0, "dom0" contains "system_u:system_r:dom0_t,s0", and so on. These sids are put on **sidtab**, and those policies are contained by **policydb**.
+- 
+
+
 
 (3) TCB
 
