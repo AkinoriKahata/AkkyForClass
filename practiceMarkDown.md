@@ -7,15 +7,15 @@ What are the security properties of the system? How does it adhere to the princi
 
 ### Xen's security feature
 **The point of Over whole architecture**
-1. dom0 as reference monitor
+1. Dom0 (aka Control Domain) as reference monitor
 - Dom0 (domain0) is initial domain which is started at boot timing of hyperxen hyper visor, and it is key component for security. Dom0 has privilege to manages domU (domain user). Basically, only dom0 can access the hardware directly. DomU have to communicate with dom0 to use syscall(hypercall in VM). Thanks to this architecture, xen may check the critical activities of domUs by dom0.
 - But sometimes, domU want to access drivers directly. In these cases, there are mechanism of DriverDomain, and also hardware can be passed thourh to the domU.
 
 2. XSM (Xen Security Module) and FLASK (Flux Advanced Security Kernel)
 - Provides **Mandatory Access control** like Security ENriched LInux (SELinux).
 
-3. TCB
-- For tamper proof, Xen has a much larger TCB, and more flexible
+3. TCB (Trusted Computer Base)
+- Xen's TCB is relatively large. Xen's TCB includes Contorol domain (Dom0) and hypervisor layer. Dom0 has toolstacks, dom0 kernel whicha includes drivers. Hypervisor layers has memory management unit (mmu), scheduler and xen security module (xsm). There is difficult concept that Large TCB is good or not but ....
 
 4. Verification
 - Xode - 200k + LOC
@@ -63,12 +63,20 @@ allow dom0_t xen_t:xen {
 - By using these files, type can be implemented each module, and each type are allocated to role, and users. These set of security attributes associated are called **security context**. These contexts are labeled by security id **sid**. Example of sids are "xen" contains "system_u:system_r:xen_t,s0, "dom0" contains "system_u:system_r:dom0_t,s0", and so on. These sids are put on **sidtab**, and those policies are contained by **policydb**.
 - 
 
-
-
 (3) TCB
 
 (4) Tamper proof
 
 ### Advanced Feature (domain0 less architecture)
-- 
+- To improve 
+
 (1) device model stub domain
+
+
+A stub domain is a specialized system domain running on a Xen host used in order to disaggregate the control domain ("domain 0"). Many stub domains are based on the Mini-OS tiny OS (see extras/mini-os in the Xen source code). Some work has been done on Linux stub domains.
+
+In the specific case of a device model stub domain this system domain is used to run the Qemu device model associated with an HVM domain. Often the Qemu device model would be a normal process running in the domain 0 environment.
+
+Device model stub domains were first implemented by Samuel Thibault in Xen 3.3 in 2008.
+
+
