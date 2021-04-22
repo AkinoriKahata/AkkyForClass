@@ -6,8 +6,8 @@ What are the security properties of the system? How does it adhere to the princi
 - But, one recent optimization is the dom0-less static partitioning to avoid the complexity of running an extra management virtual machine after bootup. Also, even though dom0 is used, there is the option for xen PCI passthrough, which gives the VM guest more rights - instead of sending requests to the event channel via dom0, the privileged domU can bypass the access the hardware directly (much faster but less secure). How to keep secure in these cases?
 
 ### Xen's security feature
-
 ![overview](https://github.com/GWU-Advanced-OS/project-clan-of-xen/blob/main/images/overview.png)
+
 **The point of Over whole architecture**
 1. Dom0 (aka Control Domain) as reference monitor
 - Dom0 (domain0) is initial domain which is started at boot timing of hyperxen hyper visor, and it is key component for security. Dom0 has privilege to manages domU (domain user). Basically, only dom0 can access the hardware directly. DomU have to communicate with dom0 to access driver. Thanks to this architecture, xen may check the critical activities of domUs by dom0.
@@ -51,7 +51,7 @@ static struct evtchn *alloc_evtchn_bucket(struct domain *d, unsigned int port)
 
 - Policies are written in TE(type enforcement) file, like **dom0.te**. General format is below.
 ```
-*allows<ource type> <target type>:<security class> <hypercall>; 
+*allow<source type> <target type>:<security class> <hypercall>; 
 <example code from "dom0.te">
 allow dom0_t xen_t:xen {
 	settime tbufcontrol readconsole clearconsole perfcontrol mtrr_add
